@@ -21,15 +21,19 @@ use pocketmine\permission\Permission;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
+
+
 class Main extends PluginBase implements Listener
 {
 
 
     public static Config $config;
+    public static Config $lang;
     public static self $instance;
 
     protected function onEnable (): void
     {
+        $this->saveResource("fr.FR.yml");
         self::$instance = $this;
         DefaultPermissions::registerPermission(new Permission("maintenance.use", "desc", [DefaultPermissions::ROOT_OPERATOR]));
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
@@ -49,6 +53,7 @@ class Main extends PluginBase implements Listener
             "form-reason" => "raison"
 
         ));
+        self::$lang = new Config($this->getDataFolder()."fr.FR.yml");
     }
 
     public static function getInstance (): self

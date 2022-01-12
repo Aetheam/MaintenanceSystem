@@ -4,23 +4,24 @@ namespace royal\maintenanceSystem\task;
 
 use JsonException;
 use pocketmine\player\Player;
-use pocketmine\scheduler\CancelTaskException;
 use pocketmine\scheduler\Task;
 use pocketmine\utils\Config;
 use royal\maintenanceSystem\Main;
-use royal\maintenanceSystem\MaintenanceCommands;
 
 class MaintenanceTask extends Task
 {
     public static int $timer;
     public static int $timerstart;
     public string $text;
+    public bool $shutdown;
 
-    public function __construct (int $time = 100, string $text = null)
+
+    public function __construct ($shutdown,int $time = 100, string $text = null)
     {
         self::$timer = $time;
         self::$timerstart = $time;
         $this->text = $text;
+        $this->shutdown = $shutdown;
     }
 
     /**
@@ -60,8 +61,15 @@ class MaintenanceTask extends Task
             if (Main::$config->get("tranfere-to-other-server") === true) {
                 $this->transferePlayers();
             }
+            foreach (Main::getInstance()->getServer()->getOnlinePlayers() as $player) {
+                if ($player instanceof Player) {
+                    $player->kick(Main::$config->get("message-to-kick"));
+                }
+            }
             Main::getInstance()->getServer()->getConfigGroup()->setConfigBool("white-list", true);
-            Main::getInstance()->getServer()->shutdown();
+            if ($this->shutdown === true){
+                Main::getInstance()->getServer()->shutdown();
+            }
         } else {
             --self::$timer;
         }

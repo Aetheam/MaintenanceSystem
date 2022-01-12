@@ -39,7 +39,6 @@ class MaintenanceCommands extends Command
                         $test = new Config($dir);
                         $test->set("white-list", false);
                         $test->save();
-                        Main::getInstance()->getServer()->shutdown();
                         break;
                 }
                 return true;
@@ -54,10 +53,12 @@ class MaintenanceCommands extends Command
     public function sendOnMaintenance (Player $sender)
     {
         $form = new CustomForm(function (Player $player, array $meta = null) {
-            Main::getInstance()->getScheduler()->scheduleRepeatingTask(new MaintenanceTask($meta[1], $meta[0]), 20);
+            var_dump($meta);
+            Main::getInstance()->getScheduler()->scheduleRepeatingTask(new MaintenanceTask($meta[1],$meta[2], $meta[0]), 20);
         });
         $form->setTitle("Maintenance System");
         $form->addInput(Main::$config->get("form-reason"));
+        $form->addToggle(Main::$lang->get("form-toggle-shutdown"));
         $form->addSlider("time", 1, 500);
         $sender->sendForm($form);
     }
