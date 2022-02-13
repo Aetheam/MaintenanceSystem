@@ -1,5 +1,7 @@
 ## MaintenanceSystem Change soon
-<a href="https://poggit.pmmp.io/p/MaintenanceSystem"><img src="https://poggit.pmmp.io/shield.state/MaintenanceSystem"></a>
+<img  src="https://github.com/Aetheam/Skyblock_Aethteam-inDev-/blob/Master/img/AethTeam.png" alt="picture">
+
+[Join Discord Team, click here](https://discord.gg/hjbADqXRde)
 ## Version: 0.0.1
 
 ## api: pocketmine 4.0
